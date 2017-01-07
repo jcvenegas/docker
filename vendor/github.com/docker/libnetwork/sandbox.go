@@ -910,7 +910,11 @@ func (sb *sandbox) clearNetworkResources(origEp *endpoint) error {
 			break
 		}
 	}
-	heap.Remove(&sb.endpoints, index)
+	if index != -1 {
+		heap.Remove(&sb.endpoints, index)
+	} else {
+		log.Warnf("Failed to remove enpoint index %d : %s\n", sb.ID())
+	}
 	for _, e := range sb.endpoints {
 		if len(e.Gateway()) > 0 {
 			gwepAfter = e
